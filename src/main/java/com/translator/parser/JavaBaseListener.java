@@ -1160,6 +1160,7 @@ public class JavaBaseListener implements JavaListener {
      */
     @Override
     public void enterVariableModifier(@NotNull JavaParser.VariableModifierContext ctx) {
+
     }
 
     /**
