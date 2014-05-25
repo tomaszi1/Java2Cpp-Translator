@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ClassOrInterfaceType extends Type {
-    private Identifier identifier;
+public class ClassOrInterfaceType extends Type implements ContainsIdentifier {
+    private final Identifier identifier;
     private final List<ClassOrInterfaceTypeSection> typeSections = new LinkedList<>();
+
+    public ClassOrInterfaceType(Identifier identifier) {
+        this.identifier = identifier;
+    }
 
     @Override
     public void addSubRule(Rule subrule) throws NoSuchSubruleException, SubruleAlreadySetException {
@@ -18,15 +22,11 @@ public class ClassOrInterfaceType extends Type {
 
         if (subrule instanceof ClassOrInterfaceTypeSection)
             typeSections.add((ClassOrInterfaceTypeSection) subrule);
-        else if (subrule instanceof Identifier) {
-            if (identifier != null)
-                throw new SubruleAlreadySetException();
-            identifier = (Identifier) subrule;
-        } else {
+        else 
             throw new NoSuchSubruleException();
-        }
     }
 
+    @Override
     public Identifier getIdentifier() {
         return identifier;
     }

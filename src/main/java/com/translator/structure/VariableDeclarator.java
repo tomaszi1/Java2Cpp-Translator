@@ -5,7 +5,7 @@ import com.translator.exceptions.NoSuchSubruleException;
 
 public class VariableDeclarator extends Rule {
 
-    private String variableDeclaratorId;
+    private VariableDeclaratorId variableDeclaratorId;
     private VariableInitializer variableInitializer;
 
     @Override

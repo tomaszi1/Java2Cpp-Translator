@@ -5,6 +5,8 @@ import com.translator.exceptions.SubruleAlreadySetException;
 import com.translator.exceptions.NoSuchSubruleException;
 
 public class TypeArgument extends Rule {
+    private Type type;
+    // TODO
 
     @Override
     public void addSubRule(Rule subrule) throws NoSuchSubruleException, SubruleAlreadySetException {

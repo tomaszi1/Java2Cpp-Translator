@@ -5,6 +5,7 @@ import com.translator.RuleController;
 import com.translator.exceptions.NoSuchSubruleException;
 import com.translator.exceptions.SubruleAlreadySetException;
 import com.translator.structure.ClassOrInterfaceType;
+import com.translator.structure.Identifier;
 import com.translator.structure.LocalVariableDeclaration;
 import com.translator.structure.LocalVariableDeclarationStatement;
 import com.translator.structure.Rule;
@@ -12,7 +13,7 @@ import com.translator.structure.VariableModifier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SimpleListener extends JavaBaseListener {
+public class SimpleListener extends EchoListener {
     private void addToCurrentRuleAndGoDownOneLevel(Rule subrule) {
         try {
             Rule currentRule = RuleController.getCurrentRule();
@@ -53,7 +54,7 @@ public class SimpleListener extends JavaBaseListener {
 
     @Override
     public void enterClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
-        ClassOrInterfaceType type = new ClassOrInterfaceType();
+        ClassOrInterfaceType type = new ClassOrInterfaceType(new Identifier("fix")); //FIXME
         addToCurrentRuleAndGoDownOneLevel(type);
     }
 
@@ -61,7 +62,6 @@ public class SimpleListener extends JavaBaseListener {
     public void exitClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
         goUpOneLevel();
     }
-
 
 
     @Override

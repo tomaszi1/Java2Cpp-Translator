@@ -1,10 +1,7 @@
 
 package com.translator.structure;
 
-import com.translator.exceptions.SubruleAlreadySetException;
-import com.translator.exceptions.NoSuchSubruleException;
-
-public class Identifier extends Rule {
+public class Identifier {
 
     private final String identifier;
 
@@ -13,11 +10,7 @@ public class Identifier extends Rule {
     }
 
     @Override
-    public void addSubRule(Rule subrule) throws NoSuchSubruleException, SubruleAlreadySetException {
-        throw new NoSuchSubruleException();
-    }
-
-    public String getIdentifier() {
+    public String toString() {
         return identifier;
     }
 

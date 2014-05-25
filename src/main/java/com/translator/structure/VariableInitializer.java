@@ -13,6 +13,9 @@ public class VariableInitializer extends Rule {
 
     @Override
     public void addSubRule(Rule subrule) throws NoSuchSubruleException, SubruleAlreadySetException {
+        if (subrule == null)
+            throw new NullPointerException();
+
         if (subrule instanceof Expression) {
             if (!arrayInitializer.isEmpty())
                 throw new SubruleAlreadySetException();
