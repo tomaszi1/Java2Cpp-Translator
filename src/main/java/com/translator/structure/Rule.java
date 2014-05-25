@@ -17,4 +17,9 @@ public abstract class Rule {
         return parent;
     }
 
+    public String name() {
+        String capName = this.getClass().getSimpleName();
+        String firLet = capName.substring(0, 1);
+        return firLet.toLowerCase() + capName.substring(1);
+    }
 }
