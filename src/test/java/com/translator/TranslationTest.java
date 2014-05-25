@@ -1,7 +1,6 @@
 package com.translator;
 
 import com.translator.parser.LogListener;
-import com.translator.structure.BlockStatement;
 import com.translator.structure.LocalVariableDeclarationStatement;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -19,7 +18,7 @@ public class TranslationTest {
                 + " }"
                 + "}";
         TestExecutor.execute(sourceCode, new LogListener());
-        TreeDisplayer.displayTreeOfCode(sourceCode);
+        TreeDisplayer.displaySyntaxTree(sourceCode);
     }
 
     @Test

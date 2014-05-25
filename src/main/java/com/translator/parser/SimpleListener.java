@@ -13,7 +13,7 @@ import com.translator.structure.VariableModifier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SimpleListener extends EchoListener {
+public class SimpleListener extends LogListener {
     private void addToCurrentRuleAndGoDownOneLevel(Rule subrule) {
         try {
             Rule currentRule = RuleController.getCurrentRule();
