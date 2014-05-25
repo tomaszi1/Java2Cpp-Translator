@@ -1,13 +1,14 @@
 
 package com.translator.structure;
 
-import com.translator.exceptions.NoSuchSubruleException;
+public abstract class Type extends Rule {
+    private int arrayDims = 0;
 
-public class Type extends Rule {
-
-    @Override
-    public void addSubRule(Rule subrule) throws NoSuchSubruleException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getArrayDims() {
+        return arrayDims;
     }
 
+    public void setArrayDims(int arrayDims) {
+        this.arrayDims = arrayDims;
+    }
 }

@@ -3,7 +3,7 @@ package com.translator.structure;
 
 import com.translator.exceptions.NoSuchSubruleException;
 
-public class VariableDeclarators extends Rule {
+public class ArrayInitializer extends Rule {
 
     @Override
     public void addSubRule(Rule subrule) throws NoSuchSubruleException {
