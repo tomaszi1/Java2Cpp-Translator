@@ -1,5 +1,6 @@
-package com.translator;
+package com.translator.utils;
 
+import com.translator.RuleController;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaListener;
 import com.translator.parser.JavaParser;

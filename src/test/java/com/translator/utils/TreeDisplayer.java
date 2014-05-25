@@ -1,4 +1,4 @@
-package com.translator;
+package com.translator.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
