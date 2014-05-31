@@ -4,7 +4,6 @@ import com.translator.utils.TestExecutor;
 import com.translator.utils.TreeDisplayer;
 import com.translator.parser.LogListener;
 import com.translator.structure.LocalVariableDeclarationStatement;
-import java.io.IOException;
 import java.util.logging.Logger;
 import org.junit.Test;
 
@@ -26,9 +25,8 @@ public class TranslationTest {
     @Test
     public void simpleTest2() throws Exception {
         String sourceCode = "int i = 5;";
-        LocalVariableDeclarationStatement baseRule = new LocalVariableDeclarationStatement();
-        TestExecutor.execute(sourceCode, new LogListener(), baseRule);
-        TreeDisplayer.displaySyntaxTree(sourceCode, baseRule.name());
+        TestExecutor.execute(sourceCode, new LogListener());
+        TreeDisplayer.displaySyntaxTree(sourceCode, "");
     }
 
 }

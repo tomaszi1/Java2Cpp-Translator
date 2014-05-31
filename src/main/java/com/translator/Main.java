@@ -3,7 +3,6 @@ package com.translator;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaParser;
 import com.translator.parser.SimpleListener;
-import com.translator.structure.CompilationUnit;
 import java.io.IOException;
 import java.io.InputStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -18,8 +17,6 @@ public class Main {
         JavaLexer lexer = new JavaLexer(antlrStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaParser parser = new JavaParser(tokens);
-
-        RuleController.setCurrentRule(new CompilationUnit());
 
         ParserRuleContext tree = parser.compilationUnit();
         ParseTreeWalker walker = new ParseTreeWalker();

@@ -17,17 +17,17 @@ public class LogListener extends JavaBaseListener {
 
     @Override
     public void visitTerminal(TerminalNode node) {
-        LOG.info("visitTerminal");
+        //LOG.info("visitTerminal");
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
-        LOG.info("exitEveryRule");
+        //LOG.info("exitEveryRule");
     }
 
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
-        LOG.info("enterEveryRule");
+        //LOG.info("enterEveryRule");
     }
 
     @Override

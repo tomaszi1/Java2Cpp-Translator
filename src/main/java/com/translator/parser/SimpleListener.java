@@ -1,78 +1,48 @@
 
 package com.translator.parser;
 
-import com.translator.RuleController;
-import com.translator.exceptions.NoSuchSubruleException;
-import com.translator.exceptions.SubruleAlreadySetException;
-import com.translator.structure.ClassOrInterfaceType;
-import com.translator.structure.Identifier;
-import com.translator.structure.LocalVariableDeclaration;
-import com.translator.structure.LocalVariableDeclarationStatement;
-import com.translator.structure.Rule;
-import com.translator.structure.VariableModifier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.translator.structure.ClassDeclaration;
+import com.translator.output.ContextHolder;
+import com.translator.structure.ClassBodyDeclaration;
+import com.translator.structure.FieldDeclaration;
 
-public class SimpleListener extends LogListener {
-    private void addToCurrentRuleAndGoDownOneLevel(Rule subrule) {
-        try {
-            Rule currentRule = RuleController.getCurrentRule();
-            subrule.setParent(currentRule);
-            currentRule.addSubRule(subrule);
-            RuleController.setCurrentRule(subrule);
-        } catch (NoSuchSubruleException | SubruleAlreadySetException ex) {
-            Logger.getLogger(SimpleListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+public class SimpleListener extends JavaBaseListener {
 
-    private void goUpOneLevel() {
-        Rule currentRule = RuleController.getCurrentRule();
-        RuleController.setCurrentRule(currentRule.getParent());
+    @Override
+    public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
+        super.enterClassDeclaration(ctx); //To change body of generated methods, choose Tools | Templates.
+        ClassDeclaration classDecl = new ClassDeclaration(ctx);
+        ContextHolder.translationUnit.addClassDeclaration(classDecl);
+        ContextHolder.classDeclarations.push(classDecl);
     }
 
     @Override
-    public void enterLocalVariableDeclarationStatement(JavaParser.LocalVariableDeclarationStatementContext ctx) {
-        LocalVariableDeclarationStatement stat = new LocalVariableDeclarationStatement();
-        addToCurrentRuleAndGoDownOneLevel(stat);
+    public void exitClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
+        super.exitClassDeclaration(ctx); //To change body of generated methods, choose Tools | Templates.
+        ContextHolder.classDeclarations.pop();
     }
 
     @Override
-    public void exitLocalVariableDeclarationStatement(JavaParser.LocalVariableDeclarationStatementContext ctx) {
-        goUpOneLevel();
+    public void enterClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+        super.enterClassBodyDeclaration(ctx); //To change body of generated methods, choose Tools | Templates.
+        ContextHolder.classDeclarations.peek().addDeclaration(ctx);
+        
     }
 
     @Override
-    public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
-        LocalVariableDeclaration decl = new LocalVariableDeclaration();
-        addToCurrentRuleAndGoDownOneLevel(decl);
+    public void exitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+        super.exitClassBodyDeclaration(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void exitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
-        goUpOneLevel();
+    public void exitFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
+        super.exitFieldDeclaration(ctx);
     }
 
     @Override
-    public void enterClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
-        ClassOrInterfaceType type = new ClassOrInterfaceType(new Identifier("fix")); //FIXME
-        addToCurrentRuleAndGoDownOneLevel(type);
-    }
-
-    @Override
-    public void exitClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
-        goUpOneLevel();
-    }
-
-
-    @Override
-    public void enterVariableModifier(JavaParser.VariableModifierContext ctx) {
-        VariableModifier finalMod = new VariableModifier();
-        addToCurrentRuleAndGoDownOneLevel(finalMod);
-    }
-
-    @Override
-    public void exitVariableModifier(JavaParser.VariableModifierContext ctx) {
-        goUpOneLevel();
+    public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
+        super.enterFieldDeclaration(ctx);
+        ContextHolder.classBodyDeclaration.setFieldDeclaration(new FieldDeclaration(ctx));
     }
 
 }
