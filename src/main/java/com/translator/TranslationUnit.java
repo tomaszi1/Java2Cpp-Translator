@@ -1,7 +1,6 @@
 
 package com.translator;
 
-import com.translator.structure.ClassBodyDeclaration;
 import com.translator.structure.ClassDeclaration;
 import com.translator.structure.MainMethodDeclaration;
 import java.util.LinkedList;

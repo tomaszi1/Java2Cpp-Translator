@@ -17,6 +17,8 @@ public class FormalParameter {
         b.append(ctx.type().getText());
         if (ctx.type().classOrInterfaceType() != null)
             b.append(" *");
+        else
+            b.append(" ");
         b.append(ctx.variableDeclaratorId().getText());
 
         return b.toString();

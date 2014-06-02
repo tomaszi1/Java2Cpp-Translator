@@ -6,6 +6,7 @@ public class ClassBodyDeclaration {
 
     JavaParser.ClassBodyDeclarationContext ctx;
     private FieldDeclaration fieldDecl;
+    private MethodDeclaration methodDecl;
 
     public ClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
         this.ctx = ctx;
@@ -15,10 +16,16 @@ public class ClassBodyDeclaration {
         this.fieldDecl = fieldDecl;
     }
 
+    public void setMethodDeclaration(MethodDeclaration methodDecl) {
+        this.methodDecl = methodDecl;
+    }
+
     @Override
     public String toString() {
         if (fieldDecl != null)
             return fieldDecl.toString() + ";";
+        if (methodDecl != null)
+            return methodDecl.toString();
         return ctx.getText();
     }
 

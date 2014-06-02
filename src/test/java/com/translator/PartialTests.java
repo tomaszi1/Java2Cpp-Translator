@@ -19,7 +19,9 @@ public class PartialTests {
                 + " final int i = 5;"
                 + " metoda();"
                 + "}"
-                + "public void metoda(){"
+                + "public void metoda(String a,Lol b){"
+                + "}"
+                + "public static String metoda2(int a){"
                 + "}"
                 + "}";
         TestExecutor.execute(sourceCode, new SimpleListener());
