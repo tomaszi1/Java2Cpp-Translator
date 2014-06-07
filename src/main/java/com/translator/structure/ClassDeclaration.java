@@ -95,4 +95,8 @@ public class ClassDeclaration {
         fieldNames.add(name);
     }
 
+    public boolean containsObjectField(String name) {
+        return fieldNames.contains(name);
+    }
+
 }

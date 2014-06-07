@@ -43,7 +43,28 @@ public class PartialTests {
                 + "  Obiekt nazwa;"
                 + " }"
                 + " public void metoda(){"
-                + "  pole.wywolanie();"
+                + "  pole.costam.wywolanie().costam();"
+                + "  pole2.wywol();"
+                + "  funkcja().trolo();"
+                + " }"
+                + " public Field funkcja(){"
+                + " }"
+                + "}";
+        TestExecutor.execute(sourceCode, new SimpleListener());
+
+        TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
+    }
+
+    @Test
+    public void test3() throws Exception {
+        String sourceCode = ""
+                + "public class Test{"
+                + " private Field pole,pole2;"
+
+                + " public void metoda(){"
+                + "  funkcja().costam();"
+                + " }"
+                + " public Field funkcja(){"
                 + " }"
                 + "}";
         TestExecutor.execute(sourceCode, new SimpleListener());

@@ -4,7 +4,6 @@ package com.translator.parser;
 import com.translator.structure.ClassDeclaration;
 import com.translator.output.ContextHolder;
 import com.translator.structure.FieldDeclaration;
-import com.translator.structure.FormalParameter;
 import com.translator.structure.MethodDeclaration;
 
 public class SimpleListener extends JavaBaseListener {
@@ -13,8 +12,8 @@ public class SimpleListener extends JavaBaseListener {
     public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
         super.enterClassDeclaration(ctx);
         ClassDeclaration classDecl = new ClassDeclaration(ctx);
-        ContextHolder.translationUnit.addClassDeclaration(classDecl);
         ContextHolder.classDeclarations.push(classDecl);
+        ContextHolder.translationUnit.addClassDeclaration(classDecl);
     }
 
     @Override
@@ -49,8 +48,9 @@ public class SimpleListener extends JavaBaseListener {
     public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         super.enterMethodDeclaration(ctx);
         MethodDeclaration methDecl = new MethodDeclaration(ctx);
-        ContextHolder.classBodyDeclaration.setMethodDeclaration(methDecl);
         ContextHolder.methodDeclaration = methDecl;
+        ContextHolder.classBodyDeclaration.setMethodDeclaration(methDecl);
+        methDecl.initMethodBody();
     }
 
     @Override
@@ -58,13 +58,6 @@ public class SimpleListener extends JavaBaseListener {
         super.enterFormalParameter(ctx);
         ContextHolder.methodDeclaration.addFormalParameter(ctx);
     }
-
-    @Override
-    public void enterExpression(JavaParser.ExpressionContext ctx) {
-        super.enterExpression(ctx);
-
-    }
-
 
 
 }

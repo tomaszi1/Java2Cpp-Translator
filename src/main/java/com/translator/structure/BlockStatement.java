@@ -4,19 +4,25 @@ package com.translator.structure;
 import com.translator.output.ContextHolder;
 import com.translator.parser.JavaParser;
 
-class BlockStatement {
-    JavaParser.BlockStatementContext ctx;
+public class BlockStatement {
+
+    private JavaParser.BlockStatementContext ctx;
+    private Statement statement;
 
     public BlockStatement(JavaParser.BlockStatementContext ctx) {
         this.ctx = ctx;
-        JavaParser.LocalVariableDeclarationStatementContext stCtx = ctx.localVariableDeclarationStatement();
-        if (stCtx != null) {
-            JavaParser.LocalVariableDeclarationContext varDecl = stCtx.localVariableDeclaration();
+        JavaParser.LocalVariableDeclarationStatementContext varStCtx = ctx.localVariableDeclarationStatement();
+        JavaParser.StatementContext stCtx = ctx.statement();
+        if (varStCtx != null) {
+            JavaParser.LocalVariableDeclarationContext varDecl = varStCtx.localVariableDeclaration();
             if (varDecl.type().classOrInterfaceType() != null) {
                 for (JavaParser.VariableDeclaratorContext varDecCtx : varDecl.variableDeclarators().variableDeclarator()) {
-                    ContextHolder.methodDeclaration.addLocalVariableName(varDecCtx.variableDeclaratorId().getText());
+                    String str = varDecCtx.variableDeclaratorId().getText();
+                    ContextHolder.methodDeclaration.addLocalVariableName(str);
                 }
             }
+        } else if (stCtx != null) {
+            statement = new Statement(stCtx);
         }
     }
 
@@ -43,6 +49,6 @@ class BlockStatement {
             }
             return b.append(";").toString();
         }
-        return ctx.getText();
+        return statement.toString();
     }
 }

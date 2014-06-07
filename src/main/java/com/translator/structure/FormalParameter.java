@@ -5,7 +5,7 @@ import com.translator.parser.JavaParser;
 
 public class FormalParameter {
 
-    private JavaParser.FormalParameterContext ctx;
+    private final JavaParser.FormalParameterContext ctx;
 
     public FormalParameter(JavaParser.FormalParameterContext ctx) {
         this.ctx = ctx;

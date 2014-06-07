@@ -1,6 +1,7 @@
 
 package com.translator.structure;
 
+import com.translator.output.ContextHolder;
 import com.translator.parser.JavaParser;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,18 +9,24 @@ import java.util.List;
 import java.util.Set;
 
 public class MethodDeclaration {
-    private final MethodBody methodBody;
+    private MethodBody methodBody;
     private final JavaParser.MethodDeclarationContext ctx;
     private final List<FormalParameter> formalParameters = new LinkedList<>();
     private final Set<String> localVariableNames = new HashSet<>();
 
     public MethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-        methodBody = new MethodBody(ctx.methodBody());
         this.ctx = ctx;
+        if (ctx.type() != null && ctx.type().classOrInterfaceType() != null) {
+            ContextHolder.classDeclarations.peek().addFieldName(ctx.Identifier().getText());
+        }
     }
 
     public void addFormalParameter(JavaParser.FormalParameterContext ctx) {
         formalParameters.add(new FormalParameter(ctx));
+    }
+
+    public void initMethodBody() {
+        methodBody = new MethodBody(ctx.methodBody());
     }
 
     @Override
@@ -29,8 +36,9 @@ public class MethodDeclaration {
             b.append("void ");
         else {
             b.append(ctx.type().getText());
-            if (ctx.type().classOrInterfaceType() != null)
+            if (ctx.type().classOrInterfaceType() != null) {
                 b.append("* ");
+            }
         }
         b.append(ctx.Identifier().getText());
 
@@ -50,5 +58,9 @@ public class MethodDeclaration {
 
     public void addLocalVariableName(String name) {
         localVariableNames.add(name);
+    }
+
+    public boolean containsObject(String name) {
+        return localVariableNames.contains(name);
     }
 }
