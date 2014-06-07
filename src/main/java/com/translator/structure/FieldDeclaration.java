@@ -2,6 +2,7 @@
 package com.translator.structure;
 
 import com.translator.output.ContextHolder;
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 
 public class FieldDeclaration {
@@ -19,6 +20,7 @@ public class FieldDeclaration {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
+        b.append(Output.indent(0));
         b.append(ctx.type().getText()).append(" ");
         if (ctx.type().classOrInterfaceType() != null) {
             for (JavaParser.VariableDeclaratorContext varDecCtx : ctx.variableDeclarators().variableDeclarator()) {

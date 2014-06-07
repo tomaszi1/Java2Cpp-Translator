@@ -24,7 +24,8 @@ public class TranslationUnit {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(mainMethod);
+        if (mainMethod != null)
+            builder.append(mainMethod);
         for (ClassDeclaration classDecl : classDeclarations) {
             builder.append(classDecl.toString());
         }

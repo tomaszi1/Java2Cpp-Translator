@@ -2,6 +2,7 @@
 package com.translator.structure;
 
 import com.translator.output.ContextHolder;
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -32,6 +33,7 @@ public class MethodDeclaration {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
+        b.append(Output.indent(0));
         if (ctx.type() == null)
             b.append("void ");
         else {
@@ -51,8 +53,11 @@ public class MethodDeclaration {
 
         b.append(")");
         b.append("{\n");
+        Output.indentLevel++;
         b.append(methodBody);
-        b.append("}");
+        Output.indentLevel--;
+        b.append(Output.indent(0));
+        b.append("}\n");
         return b.toString();
     }
 

@@ -2,6 +2,7 @@
 package com.translator.structure;
 
 import com.translator.output.ContextHolder;
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 
 public class BlockStatement {
@@ -32,6 +33,7 @@ public class BlockStatement {
         if (stCtx != null) {
             JavaParser.LocalVariableDeclarationContext varDecl = stCtx.localVariableDeclaration();
             StringBuilder b = new StringBuilder();
+            b.append(Output.indent(0));
             if (!varDecl.variableModifier().isEmpty()
                     && varDecl.variableModifier().get(0).getText().equals("final")) {
                 b.append("const ");

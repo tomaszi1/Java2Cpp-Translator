@@ -19,7 +19,7 @@ public class MethodBody {
     public String toString() {
         StringBuilder b = new StringBuilder();
         for (BlockStatement st : statements) {
-            b.append(st.toString()).append("\n");
+            b.append(st).append("\n");
         }
         return b.toString();
     }

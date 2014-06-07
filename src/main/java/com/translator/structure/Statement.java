@@ -1,6 +1,7 @@
 
 package com.translator.structure;
 
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 
 public class Statement {
@@ -18,8 +19,8 @@ public class Statement {
     @Override
     public String toString() {
         if (expression != null)
-            return expression.toString() + ";";
-        return ctx.getText();
+            return Output.indent(0) + expression.toString() + ";";
+        return Output.indent(0) + ctx.getText();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.translator.structure;
 
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 
 public class ClassBodyDeclaration {
@@ -26,7 +27,7 @@ public class ClassBodyDeclaration {
             return fieldDecl.toString() + ";";
         if (methodDecl != null)
             return methodDecl.toString();
-        return ctx.getText();
+        return Output.indent(0) + ctx.getText();
     }
 
 }

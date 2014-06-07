@@ -1,6 +1,7 @@
 package com.translator.structure;
 
 import com.translator.output.ContextHolder;
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 import com.translator.parser.JavaParser.ClassDeclarationContext;
 import java.util.HashSet;
@@ -70,25 +71,29 @@ public class ClassDeclaration {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("class ").append(name).append("{\n");
-        if (!publicDeclarations.isEmpty())
-            builder.append("public:\n");
+        StringBuilder b = new StringBuilder();
+        b.append(Output.indent(0));
+        b.append("class ").append(name).append("{\n");
+        Output.indentLevel++;
+        if (!publicDeclarations.isEmpty()) {
+            b.append(Output.indent(-1)).append("public:\n");
+        }
         for (ClassBodyDeclaration decl : publicDeclarations) {
-            builder.append(decl).append("\n");
+            b.append(decl).append("\n");
         }
         if (!privateDeclarations.isEmpty())
-            builder.append("private:\n");
+            b.append(Output.indent(-1)).append("private:\n");
         for (ClassBodyDeclaration decl : privateDeclarations) {
-            builder.append(decl).append("\n");
+            b.append(decl).append("\n");
         }
         if (!protectedDeclarations.isEmpty())
-            builder.append("protected:\n");
+            b.append(Output.indent(-1)).append("protected:\n");
         for (ClassBodyDeclaration decl : protectedDeclarations) {
-            builder.append(decl).append("\n");
+            b.append(decl).append("\n");
         }
-        builder.append("\n}");
-        return builder.toString();
+        Output.indentLevel--;
+        b.append(Output.indent(0)).append("}");
+        return b.toString();
     }
 
     public void addFieldName(String name) {
