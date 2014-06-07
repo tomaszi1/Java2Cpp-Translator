@@ -3,6 +3,7 @@ package com.translator;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaParser;
 import com.translator.parser.SimpleListener;
+import com.translator.structure.MainMethodDeclaration;
 import java.io.IOException;
 import java.io.InputStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -23,4 +24,5 @@ public class Main {
         SimpleListener listener = new SimpleListener();
         walker.walk(listener, tree);
     }
+
 }

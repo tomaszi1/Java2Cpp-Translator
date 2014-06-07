@@ -59,5 +59,12 @@ public class SimpleListener extends JavaBaseListener {
         ContextHolder.methodDeclaration.addFormalParameter(ctx);
     }
 
+    @Override
+    public void enterExpression(JavaParser.ExpressionContext ctx) {
+        super.enterExpression(ctx);
+
+    }
+
+
 
 }

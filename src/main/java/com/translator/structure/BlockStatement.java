@@ -1,6 +1,7 @@
 
 package com.translator.structure;
 
+import com.translator.output.ContextHolder;
 import com.translator.parser.JavaParser;
 
 class BlockStatement {
@@ -8,6 +9,15 @@ class BlockStatement {
 
     public BlockStatement(JavaParser.BlockStatementContext ctx) {
         this.ctx = ctx;
+        JavaParser.LocalVariableDeclarationStatementContext stCtx = ctx.localVariableDeclarationStatement();
+        if (stCtx != null) {
+            JavaParser.LocalVariableDeclarationContext varDecl = stCtx.localVariableDeclaration();
+            if (varDecl.type().classOrInterfaceType() != null) {
+                for (JavaParser.VariableDeclaratorContext varDecCtx : varDecl.variableDeclarators().variableDeclarator()) {
+                    ContextHolder.methodDeclaration.addLocalVariableName(varDecCtx.variableDeclaratorId().getText());
+                }
+            }
+        }
     }
 
     @Override
@@ -16,7 +26,8 @@ class BlockStatement {
         if (stCtx != null) {
             JavaParser.LocalVariableDeclarationContext varDecl = stCtx.localVariableDeclaration();
             StringBuilder b = new StringBuilder();
-            if (varDecl.variableModifier().get(0).getText().equals("final")) {
+            if (!varDecl.variableModifier().isEmpty()
+                    && varDecl.variableModifier().get(0).getText().equals("final")) {
                 b.append("const ");
             }
             b.append(varDecl.type().getText()).append(" ");

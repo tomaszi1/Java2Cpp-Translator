@@ -3,7 +3,6 @@ package com.translator;
 import com.translator.utils.TestExecutor;
 import com.translator.utils.TreeDisplayer;
 import com.translator.parser.LogListener;
-import com.translator.structure.LocalVariableDeclarationStatement;
 import java.util.logging.Logger;
 import org.junit.Test;
 

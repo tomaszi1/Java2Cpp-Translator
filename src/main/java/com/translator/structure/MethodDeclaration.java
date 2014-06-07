@@ -2,13 +2,16 @@
 package com.translator.structure;
 
 import com.translator.parser.JavaParser;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class MethodDeclaration {
     private final MethodBody methodBody;
     private final JavaParser.MethodDeclarationContext ctx;
     private final List<FormalParameter> formalParameters = new LinkedList<>();
+    private final Set<String> localVariableNames = new HashSet<>();
 
     public MethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         methodBody = new MethodBody(ctx.methodBody());
@@ -43,5 +46,9 @@ public class MethodDeclaration {
         b.append(methodBody);
         b.append("}");
         return b.toString();
+    }
+
+    public void addLocalVariableName(String name) {
+        localVariableNames.add(name);
     }
 }

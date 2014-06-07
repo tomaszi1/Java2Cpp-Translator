@@ -3,8 +3,10 @@ package com.translator.structure;
 import com.translator.output.ContextHolder;
 import com.translator.parser.JavaParser;
 import com.translator.parser.JavaParser.ClassDeclarationContext;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class ClassDeclaration {
@@ -13,6 +15,7 @@ public class ClassDeclaration {
     private final List<ClassBodyDeclaration> publicDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> privateDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> protectedDeclarations = new LinkedList<>();
+    private final Set<String> fieldNames = new HashSet<>();
 
     public ClassDeclaration(ClassDeclarationContext ctx) {
         name = ctx.Identifier().getText();
@@ -86,6 +89,10 @@ public class ClassDeclaration {
         }
         builder.append("\n}");
         return builder.toString();
+    }
+
+    public void addFieldName(String name) {
+        fieldNames.add(name);
     }
 
 }

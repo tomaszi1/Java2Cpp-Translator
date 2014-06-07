@@ -16,6 +16,11 @@ public class PartialTests {
                 + "private Field pole1,pole2;"
                 + "int prymityw,prym2;"
                 + "public static void main(){"
+                + " if(i>3){"
+                + " metoda(i,new Lol()).wykonaj(); "
+                + "}else{"
+                + " fuck();"
+                + "}"
                 + " final int i = 5;"
                 + " metoda();"
                 + "}"
@@ -23,6 +28,23 @@ public class PartialTests {
                 + "}"
                 + "public static String metoda2(int a){"
                 + "}"
+                + "}";
+        TestExecutor.execute(sourceCode, new SimpleListener());
+
+        TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
+    }
+
+    @Test
+    public void test2() throws Exception {
+        String sourceCode = ""
+                + "public class Test{"
+                + " private Field pole,pole2;"
+                + " void costam(){"
+                + "  Obiekt nazwa;"
+                + " }"
+                + " public void metoda(){"
+                + "  pole.wywolanie();"
+                + " }"
                 + "}";
         TestExecutor.execute(sourceCode, new SimpleListener());
 
