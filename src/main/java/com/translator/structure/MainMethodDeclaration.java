@@ -14,7 +14,7 @@ public class MainMethodDeclaration {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append("int main(int argc, char *argv[]){\n");
-        b.append(methodBody).append("}\n");
+        b.append(methodBody).append("return 0;\n}\n");
         return b.toString();
     }
 

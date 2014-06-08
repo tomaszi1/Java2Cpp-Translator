@@ -5,6 +5,7 @@
  */
 package com.translator.gui;
 
+import com.translator.TranslationUnit;
 import com.translator.output.ContextHolder;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaListener;
@@ -30,7 +31,7 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        String sourceCode = ""
+        String source = ""
                 + "public class Test {\n"
                 + " private Field pole,pole2;\n"
                 + " public void metoda(){\n"
@@ -39,7 +40,7 @@ public class MainWindow extends javax.swing.JFrame {
                 + " public Field funkcja(){\n"
                 + " }\n"
                 + "}";
-        txtSource.setText(sourceCode);
+        txtSource.setText(source);
     }
 
     /**
@@ -120,6 +121,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTranslateActionPerformed
     public static String execute(String sourceCode, JavaListener listener) {
+        ContextHolder.classBodyDeclaration = null;
+        ContextHolder.methodDeclaration = null;
+        ContextHolder.translationUnit = new TranslationUnit();
+        ContextHolder.classDeclarations.clear();
         ANTLRInputStream stream = new ANTLRInputStream(sourceCode);
         JavaLexer lexer = new JavaLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
