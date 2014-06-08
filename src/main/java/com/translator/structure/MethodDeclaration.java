@@ -41,6 +41,8 @@ public class MethodDeclaration {
             if (ctx.type().classOrInterfaceType() != null) {
                 b.append("* ");
             }
+            else
+                b.append(" ");
         }
         b.append(ctx.Identifier().getText());
 

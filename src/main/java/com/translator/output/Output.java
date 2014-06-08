@@ -7,7 +7,7 @@ public class Output {
     public static String indent(int offset) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < indentLevel + offset; i++) {
-            b.append("\t");
+            b.append("    ");
         }
         return b.toString();
     }

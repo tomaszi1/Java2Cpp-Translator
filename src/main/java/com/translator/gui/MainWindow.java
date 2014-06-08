@@ -34,7 +34,7 @@ public class MainWindow extends javax.swing.JFrame {
                 + "public class Test {\n"
                 + " private Field pole,pole2;\n"
                 + " public void metoda(){\n"
-                + "  funkcja().costam();\n"
+                + "\tfunkcja().costam();\n"
                 + " }\n"
                 + " public Field funkcja(){\n"
                 + " }\n"
@@ -60,6 +60,7 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         txtOutput.setColumns(20);
+        txtOutput.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         txtOutput.setRows(5);
         txtOutput.setName(""); // NOI18N
         jScrollPane1.setViewportView(txtOutput);
@@ -72,6 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         txtSource.setColumns(20);
+        txtSource.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         txtSource.setRows(5);
         txtSource.setName(""); // NOI18N
         jScrollPane2.setViewportView(txtSource);
