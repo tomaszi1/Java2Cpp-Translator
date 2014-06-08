@@ -5,6 +5,7 @@
  */
 package com.translator.gui;
 
+import com.translator.TranslationUnit;
 import com.translator.output.ContextHolder;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaListener;
@@ -30,16 +31,16 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        String sourceCode = ""
+        String source = ""
                 + "public class Test {\n"
                 + " private Field pole,pole2;\n"
                 + " public void metoda(){\n"
-                + "  funkcja().costam();\n"
+                + "\tfunkcja().costam();\n"
                 + " }\n"
                 + " public Field funkcja(){\n"
                 + " }\n"
                 + "}";
-        txtSource.setText(sourceCode);
+        txtSource.setText(source);
     }
 
     /**
@@ -60,6 +61,7 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         txtOutput.setColumns(20);
+        txtOutput.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         txtOutput.setRows(5);
         txtOutput.setName(""); // NOI18N
         jScrollPane1.setViewportView(txtOutput);
@@ -72,6 +74,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         txtSource.setColumns(20);
+        txtSource.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         txtSource.setRows(5);
         txtSource.setName(""); // NOI18N
         jScrollPane2.setViewportView(txtSource);
@@ -118,6 +121,10 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTranslateActionPerformed
     public static String execute(String sourceCode, JavaListener listener) {
+        ContextHolder.classBodyDeclaration = null;
+        ContextHolder.methodDeclaration = null;
+        ContextHolder.translationUnit = new TranslationUnit();
+        ContextHolder.classDeclarations.clear();
         ANTLRInputStream stream = new ANTLRInputStream(sourceCode);
         JavaLexer lexer = new JavaLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class ContextHolder {
     public static final Stack<ClassDeclaration> classDeclarations = new Stack<>();
-    public static final TranslationUnit translationUnit = new TranslationUnit();
+    public static TranslationUnit translationUnit = new TranslationUnit();
     public static ClassBodyDeclaration classBodyDeclaration;
     public static MethodDeclaration methodDeclaration;
 }
