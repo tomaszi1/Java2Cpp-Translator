@@ -24,5 +24,8 @@ public class VariableDeclarator {
         return sb.toString();
     }
 
+    boolean isArrayType() {
+        return ctx.variableDeclaratorId().getText().contains("[]");
+    }
 
 }

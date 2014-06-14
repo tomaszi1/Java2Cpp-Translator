@@ -9,8 +9,8 @@ import java.util.Set;
 
 public class MethodDeclaration {
 
-    private MethodBody methodBody;
-    private final JavaParser.MethodDeclarationContext ctx;
+    protected MethodBody methodBody;
+    protected final JavaParser.MethodDeclarationContext ctx;
     private final List<FormalParameter> formalParameters = new LinkedList<>();
     private final Set<String> localVariableNames = new HashSet<>();
 
@@ -38,7 +38,8 @@ public class MethodDeclaration {
             b.append("void ");
         else {
             b.append(ctx.type().getText());
-            if (ctx.type().classOrInterfaceType() != null) {
+            if (ctx.type().classOrInterfaceType() != null
+                    && !ctx.type().getText().contains("[]")) {
                 b.append("* ");
             } else
                 b.append(" ");
@@ -53,12 +54,8 @@ public class MethodDeclaration {
             b.setLength(b.length() - 1);
 
         b.append(")");
-        b.append("{\n");
-        Output.indentLevel++;
         b.append(methodBody);
-        Output.indentLevel--;
-        b.append(Output.indent(0));
-        b.append("}\n");
+
         return b.toString();
     }
 
@@ -75,8 +72,6 @@ public class MethodDeclaration {
     }
 
     boolean returnsObject() {
-        if (ctx.type().classOrInterfaceType() != null)
-            return true;
-        return false;
+        return ctx.type().classOrInterfaceType() != null;
     }
 }

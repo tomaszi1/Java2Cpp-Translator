@@ -3,18 +3,17 @@ package com.translator.structure;
 
 import com.translator.parser.JavaParser;
 
-public class MainMethodDeclaration {
-    MethodBody methodBody; // FIXME
+public class MainMethodDeclaration extends MethodDeclaration {
 
     MainMethodDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
-        methodBody = new MethodBody(ctx.memberDeclaration().methodDeclaration().methodBody());
+        super(ctx.memberDeclaration().methodDeclaration());
     }
 
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append("int main(int argc, char *argv[]){\n");
-        b.append(methodBody).append("return 0;\n}\n");
+        b.append("int main(int argc, char *argv[])");
+        b.append(methodBody);
         return b.toString();
     }
 

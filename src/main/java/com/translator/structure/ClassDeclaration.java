@@ -24,7 +24,10 @@ public class ClassDeclaration {
 
     public void addDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
         if (isMainMethod(ctx)) {
-            ContextHolder.translationUnit.setMainMethod(new MainMethodDeclaration(ctx));
+            MainMethodDeclaration mainMethDecl = new MainMethodDeclaration(ctx);
+            ContextHolder.translationUnit.setMainMethod(mainMethDecl);
+            ContextHolder.methodDeclaration = mainMethDecl;
+            mainMethDecl.initMethodBody();
             return;
         }
 

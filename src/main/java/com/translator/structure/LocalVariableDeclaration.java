@@ -24,9 +24,14 @@ public class LocalVariableDeclaration {
             sb.append("const ");
         }
         sb.append(ctx.type().getText()).append(" ");
-        if (ctx.type().classOrInterfaceType() != null)
-            for (VariableDeclarator varDecl : variableDeclarators)
-                sb.append("*").append(varDecl);
+        if (ctx.type().classOrInterfaceType() != null
+                && !ctx.type().getText().contains("[]"))
+            for (VariableDeclarator varDecl : variableDeclarators) {
+                if (!varDecl.isArrayType())
+                    sb.append("*").append(varDecl);
+                else
+                    sb.append(varDecl);
+            }
         else
             for (VariableDeclarator varDecl : variableDeclarators)
                 sb.append(varDecl);

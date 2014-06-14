@@ -15,7 +15,9 @@ public class FormalParameter {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append(ctx.type().getText());
-        if (ctx.type().classOrInterfaceType() != null)
+        if (ctx.type().classOrInterfaceType() != null
+                && !ctx.variableDeclaratorId().getText().contains("[]")
+                && !ctx.type().getText().contains("[]"))
             b.append(" *");
         else
             b.append(" ");

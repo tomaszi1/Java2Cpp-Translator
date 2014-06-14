@@ -1,5 +1,6 @@
 package com.translator.structure;
 
+import com.translator.output.ContextHolder;
 import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class ClassBodyDeclaration {
     public ClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
         this.ctx = ctx;
         if (ctx.memberDeclaration() != null) {
-            if (ctx.memberDeclaration().methodDeclaration() != null)
+            if (ctx.memberDeclaration().methodDeclaration() != null) {
                 methodDecl = new MethodDeclaration(ctx.memberDeclaration().methodDeclaration());
-            else if (ctx.memberDeclaration().fieldDeclaration() != null) {
+                ContextHolder.methodDeclaration = methodDecl;
+                methodDecl.initMethodBody();
+            } else if (ctx.memberDeclaration().fieldDeclaration() != null) {
                 fieldDecl = new FieldDeclaration(ctx.memberDeclaration().fieldDeclaration());
             }
         }

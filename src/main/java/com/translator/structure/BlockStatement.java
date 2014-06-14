@@ -26,7 +26,7 @@ public class BlockStatement {
         if (statement != null)
             sb.append(statement);
         else
-            sb.append(localVariableDeclaration);
-        return sb.append(";\n").toString();
+            sb.append(localVariableDeclaration).append(";");
+        return sb.toString();
     }
 }

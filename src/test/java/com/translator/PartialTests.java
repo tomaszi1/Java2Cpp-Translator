@@ -25,7 +25,8 @@ public class PartialTests {
                 + " metoda();"
                 + "}"
                 + "public Lol[] metoda(String[] a,Lol b){"
-                + " Lol b[] = new Lol[]{1,2,3};"
+                + " Lol b[] = {1,2,3};"
+                + " Lol[] b = {4,5,6};"
                 + "}"
                 + "public static String metoda2(int a){"
                 + "}"
@@ -66,6 +67,27 @@ public class PartialTests {
                 + "  funkcja().costam();"
                 + " }"
                 + " public Field funkcja(){"
+                + " }"
+                + "}";
+        TestExecutor.execute(sourceCode, new TranslationListener());
+
+        TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
+    }
+
+    @Test
+    public void expressionTest() throws Exception {
+        String sourceCode = ""
+                + "public class Klasa{"
+                + " void metoda(String a){"
+                + "  if((Rzut)isTrue>3){"
+                + "   new Trolol();"
+                + "   throw new WalSie();"
+                + "   break;"
+                + "  }"
+                + "  for(Obj a;a.lol();a.incr()){"
+                + "   "
+                + "  }"
+                + "  return new Dupa();"
                 + " }"
                 + "}";
         TestExecutor.execute(sourceCode, new TranslationListener());

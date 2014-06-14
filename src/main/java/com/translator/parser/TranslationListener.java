@@ -3,7 +3,6 @@ package com.translator.parser;
 
 import com.translator.structure.ClassDeclaration;
 import com.translator.output.ContextHolder;
-import com.translator.structure.MethodDeclaration;
 
 public class TranslationListener extends JavaBaseListener {
 
@@ -26,20 +25,5 @@ public class TranslationListener extends JavaBaseListener {
         super.enterClassBodyDeclaration(ctx);
         ContextHolder.classDeclarations.peek().addDeclaration(ctx);
     }
-
-    @Override
-    public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-        super.enterMethodDeclaration(ctx);
-        MethodDeclaration methDecl = new MethodDeclaration(ctx);
-        ContextHolder.methodDeclaration = methDecl;
-        methDecl.initMethodBody();
-    }
-
-    @Override
-    public void enterFormalParameter(JavaParser.FormalParameterContext ctx) {
-        super.enterFormalParameter(ctx);
-        ContextHolder.methodDeclaration.addFormalParameter(ctx);
-    }
-
 
 }
