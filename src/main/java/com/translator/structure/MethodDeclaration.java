@@ -1,7 +1,5 @@
-
 package com.translator.structure;
 
-import com.translator.output.ContextHolder;
 import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 import java.util.HashSet;
@@ -10,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MethodDeclaration {
+
     private MethodBody methodBody;
     private final JavaParser.MethodDeclarationContext ctx;
     private final List<FormalParameter> formalParameters = new LinkedList<>();
@@ -17,8 +16,9 @@ public class MethodDeclaration {
 
     public MethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         this.ctx = ctx;
-        if (ctx.type() != null && ctx.type().classOrInterfaceType() != null) {
-            ContextHolder.classDeclarations.peek().addFieldName(ctx.Identifier().getText());
+        if (ctx.formalParameters().formalParameterList() != null) {
+            for (JavaParser.FormalParameterContext forParCtx : ctx.formalParameters().formalParameterList().formalParameter())
+                formalParameters.add(new FormalParameter(forParCtx));
         }
     }
 
@@ -40,8 +40,7 @@ public class MethodDeclaration {
             b.append(ctx.type().getText());
             if (ctx.type().classOrInterfaceType() != null) {
                 b.append("* ");
-            }
-            else
+            } else
                 b.append(" ");
         }
         b.append(ctx.Identifier().getText());
@@ -69,5 +68,15 @@ public class MethodDeclaration {
 
     public boolean containsObject(String name) {
         return localVariableNames.contains(name);
+    }
+
+    String getIdentifier() {
+        return ctx.Identifier().getText();
+    }
+
+    boolean returnsObject() {
+        if (ctx.type().classOrInterfaceType() != null)
+            return true;
+        return false;
     }
 }

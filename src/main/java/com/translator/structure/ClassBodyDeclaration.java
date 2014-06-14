@@ -2,6 +2,8 @@ package com.translator.structure;
 
 import com.translator.output.Output;
 import com.translator.parser.JavaParser;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassBodyDeclaration {
 
@@ -11,14 +13,13 @@ public class ClassBodyDeclaration {
 
     public ClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
         this.ctx = ctx;
-    }
-
-    public void setFieldDeclaration(FieldDeclaration fieldDecl) {
-        this.fieldDecl = fieldDecl;
-    }
-
-    public void setMethodDeclaration(MethodDeclaration methodDecl) {
-        this.methodDecl = methodDecl;
+        if (ctx.memberDeclaration() != null) {
+            if (ctx.memberDeclaration().methodDeclaration() != null)
+                methodDecl = new MethodDeclaration(ctx.memberDeclaration().methodDeclaration());
+            else if (ctx.memberDeclaration().fieldDeclaration() != null) {
+                fieldDecl = new FieldDeclaration(ctx.memberDeclaration().fieldDeclaration());
+            }
+        }
     }
 
     @Override
@@ -28,6 +29,35 @@ public class ClassBodyDeclaration {
         if (methodDecl != null)
             return methodDecl.toString();
         return Output.indent(0) + ctx.getText();
+    }
+
+    List<String> getIdentifiers() {
+        if (fieldDecl != null)
+            return fieldDecl.getIdentifiers();
+        else if (methodDecl != null) {
+            List<String> idList = new ArrayList<>();
+            idList.add(methodDecl.getIdentifier());
+            return idList;
+        }
+        return null;
+    }
+
+    boolean isStatic() {
+        for (JavaParser.ModifierContext modCtx : ctx.modifier()) {
+            if (modCtx.getText().equals("static"))
+                return true;
+        }
+        return false;
+    }
+
+    boolean isObjectType() {
+        if (fieldDecl != null && fieldDecl.returnsObject()) {
+            return true;
+        }
+        if (methodDecl != null && methodDecl.returnsObject()) {
+            return true;
+        }
+        return false;
     }
 
 }

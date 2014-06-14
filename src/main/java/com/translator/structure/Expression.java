@@ -27,7 +27,7 @@ public class Expression {
     public boolean isPointerType() {
         if (ctx.primary() != null) {
             if (parentMethod.containsObject(ctx.primary().getText())
-                    || parentClass.containsObjectField(ctx.primary().getText()))
+                    || parentClass.hasObjectMember(ctx.primary().getText()))
                 return true;
         } else if (ctx.children.size() >= 3
                 && ctx.children.get(1).getText().equals("(")

@@ -1,7 +1,7 @@
 
 package com.translator;
 
-import com.translator.parser.SimpleListener;
+import com.translator.parser.TranslationListener;
 import com.translator.utils.TestExecutor;
 import com.translator.utils.TreeDisplayer;
 import org.junit.Test;
@@ -24,14 +24,15 @@ public class PartialTests {
                 + " final int i = 5;"
                 + " metoda();"
                 + "}"
-                + "public void metoda(String a,Lol b){"
+                + "public Lol[] metoda(String[] a,Lol b){"
+                + " Lol b[] = new Lol[]{1,2,3};"
                 + "}"
                 + "public static String metoda2(int a){"
                 + "}"
                 + "}";
-        TestExecutor.execute(sourceCode, new SimpleListener());
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
+        TestExecutor.execute(sourceCode, new TranslationListener());
     }
 
     @Test
@@ -50,7 +51,7 @@ public class PartialTests {
                 + " public Field funkcja(){"
                 + " }"
                 + "}";
-        TestExecutor.execute(sourceCode, new SimpleListener());
+        TestExecutor.execute(sourceCode, new TranslationListener());
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
     }
@@ -67,7 +68,7 @@ public class PartialTests {
                 + " public Field funkcja(){"
                 + " }"
                 + "}";
-        TestExecutor.execute(sourceCode, new SimpleListener());
+        TestExecutor.execute(sourceCode, new TranslationListener());
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
     }

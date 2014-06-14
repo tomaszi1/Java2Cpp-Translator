@@ -4,10 +4,10 @@ import com.translator.output.ContextHolder;
 import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 import com.translator.parser.JavaParser.ClassDeclarationContext;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class ClassDeclaration {
@@ -16,7 +16,7 @@ public class ClassDeclaration {
     private final List<ClassBodyDeclaration> publicDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> privateDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> protectedDeclarations = new LinkedList<>();
-    private final Set<String> fieldNames = new HashSet<>();
+    private final Map<String, ClassBodyDeclaration> allDeclarations = new HashMap<>();
 
     public ClassDeclaration(ClassDeclarationContext ctx) {
         name = ctx.Identifier().getText();
@@ -29,9 +29,11 @@ public class ClassDeclaration {
         }
 
         ClassBodyDeclaration classDecl = new ClassBodyDeclaration(ctx);
-        ContextHolder.classBodyDeclaration = classDecl;
         if (ctx.modifier().isEmpty()) {
             privateDeclarations.add(classDecl);
+            for (String id : classDecl.getIdentifiers()) {
+                allDeclarations.put(id, classDecl);
+            }
             return;
         }
         JavaParser.ModifierContext modCtx = ctx.modifier().get(0);
@@ -53,6 +55,10 @@ public class ClassDeclaration {
                 break;
             default:
                 privateDeclarations.add(classDecl);
+        }
+
+        for (String id : classDecl.getIdentifiers()) {
+            allDeclarations.put(id, classDecl);
         }
     }
 
@@ -96,12 +102,15 @@ public class ClassDeclaration {
         return b.toString();
     }
 
-    public void addFieldName(String name) {
-        fieldNames.add(name);
+    public ClassBodyDeclaration getDeclaration(String name) {
+        return allDeclarations.get(name);
     }
 
-    public boolean containsObjectField(String name) {
-        return fieldNames.contains(name);
+    public boolean hasObjectMember(String name) {
+        ClassBodyDeclaration cbDecl = allDeclarations.get(name);
+        if (cbDecl != null && cbDecl.isObjectType())
+            return true;
+        return false;
     }
 
 }

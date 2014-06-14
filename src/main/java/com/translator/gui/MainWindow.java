@@ -10,7 +10,7 @@ import com.translator.output.ContextHolder;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaListener;
 import com.translator.parser.JavaParser;
-import com.translator.parser.SimpleListener;
+import com.translator.parser.TranslationListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -112,7 +112,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnTranslateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTranslateActionPerformed
         // TODO add your handling code here:
         String sourceCode = txtSource.getText();
-        String output = execute(sourceCode, new SimpleListener());
+        String output = execute(sourceCode, new TranslationListener());
         txtOutput.setText(output);
 
         try {

@@ -3,10 +3,9 @@ package com.translator.parser;
 
 import com.translator.structure.ClassDeclaration;
 import com.translator.output.ContextHolder;
-import com.translator.structure.FieldDeclaration;
 import com.translator.structure.MethodDeclaration;
 
-public class SimpleListener extends JavaBaseListener {
+public class TranslationListener extends JavaBaseListener {
 
     @Override
     public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
@@ -29,27 +28,10 @@ public class SimpleListener extends JavaBaseListener {
     }
 
     @Override
-    public void exitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
-        super.exitClassBodyDeclaration(ctx);
-    }
-
-    @Override
-    public void exitFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
-        super.exitFieldDeclaration(ctx);
-    }
-
-    @Override
-    public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
-        super.enterFieldDeclaration(ctx);
-        ContextHolder.classBodyDeclaration.setFieldDeclaration(new FieldDeclaration(ctx));
-    }
-
-    @Override
     public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         super.enterMethodDeclaration(ctx);
         MethodDeclaration methDecl = new MethodDeclaration(ctx);
         ContextHolder.methodDeclaration = methDecl;
-        ContextHolder.classBodyDeclaration.setMethodDeclaration(methDecl);
         methDecl.initMethodBody();
     }
 

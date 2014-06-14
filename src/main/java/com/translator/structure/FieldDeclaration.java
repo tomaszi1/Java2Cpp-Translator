@@ -1,20 +1,16 @@
 
 package com.translator.structure;
 
-import com.translator.output.ContextHolder;
 import com.translator.output.Output;
 import com.translator.parser.JavaParser;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FieldDeclaration {
     private final JavaParser.FieldDeclarationContext ctx;
 
     public FieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
         this.ctx = ctx;
-        if (ctx.type().classOrInterfaceType() != null) {
-            for (JavaParser.VariableDeclaratorContext varDecCtx : ctx.variableDeclarators().variableDeclarator()) {
-                ContextHolder.classDeclarations.peek().addFieldName(varDecCtx.variableDeclaratorId().getText());
-            }
-        }
     }
 
     @Override
@@ -33,5 +29,19 @@ public class FieldDeclaration {
             b.append(ctx.variableDeclarators().getText());
         }
         return b.toString();
+    }
+
+    List<String> getIdentifiers() {
+        List<String> list = new LinkedList<>();
+        for (JavaParser.VariableDeclaratorContext varDecCtx : ctx.variableDeclarators().variableDeclarator()) {
+            list.add(varDecCtx.variableDeclaratorId().Identifier().getText());
+        }
+        return list;
+    }
+
+    boolean returnsObject() {
+        if (ctx.type().classOrInterfaceType() != null)
+            return true;
+        return false;
     }
 }
