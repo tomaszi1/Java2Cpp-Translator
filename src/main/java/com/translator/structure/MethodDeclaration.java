@@ -17,8 +17,9 @@ public class MethodDeclaration {
     public MethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         this.ctx = ctx;
         if (ctx.formalParameters().formalParameterList() != null) {
-            for (JavaParser.FormalParameterContext forParCtx : ctx.formalParameters().formalParameterList().formalParameter())
+            for (JavaParser.FormalParameterContext forParCtx : ctx.formalParameters().formalParameterList().formalParameter()) {
                 formalParameters.add(new FormalParameter(forParCtx));
+            }
         }
     }
 
@@ -27,22 +28,27 @@ public class MethodDeclaration {
     }
 
     public void initMethodBody() {
-        methodBody = new MethodBody(ctx.methodBody());
+        if (ctx.methodBody() != null) {
+            methodBody = new MethodBody(ctx.methodBody());
+        }
     }
 
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append(Output.indent(0));
-        if (ctx.type() == null)
+        if(methodBody == null)
+            b.append("virtual ");
+        if (ctx.type() == null) {
             b.append("void ");
-        else {
+        } else {
             b.append(ctx.type().getText().equals("boolean") ? "bool" : ctx.type().getText());
             if (ctx.type().classOrInterfaceType() != null
                     && !ctx.type().getText().contains("[]")) {
                 b.append("* ");
-            } else
+            } else {
                 b.append(" ");
+            }
         }
         b.append(ctx.Identifier().getText());
 
@@ -50,11 +56,16 @@ public class MethodDeclaration {
         for (FormalParameter param : formalParameters) {
             b.append(param).append(",");
         }
-        if (!formalParameters.isEmpty())
+        if (!formalParameters.isEmpty()) {
             b.setLength(b.length() - 1);
+        }
 
         b.append(")");
-        b.append(methodBody);
+        if (methodBody != null) {
+            b.append(methodBody);
+        } else {
+            b.append(";");
+        }
 
         return b.toString();
     }

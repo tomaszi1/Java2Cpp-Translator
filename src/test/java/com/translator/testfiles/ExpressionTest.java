@@ -22,6 +22,5 @@ abstract class Klasa extends Number implements Interfejs {
 }
 
 interface Interfejs {
-
-    int i = 0;
+    void metodaInterfejsu();
 }

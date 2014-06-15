@@ -1,9 +1,9 @@
-
 package com.translator.structure;
 
 import com.translator.parser.JavaParser;
 
 public class MethodBody {
+
     private final Block block;
 
     public MethodBody(JavaParser.MethodBodyContext ctx) {

@@ -100,9 +100,9 @@ public class ClassDeclaration {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append(Output.indent(0));
-        if (isAbstract) {
+        /*if (isAbstract) {
             b.append("abstract ");
-        }
+        }*/
         b.append("class ").append(name);
         if (!extendImplementList.isEmpty()) {
             b.append(" : ");
