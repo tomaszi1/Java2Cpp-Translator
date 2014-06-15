@@ -147,7 +147,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnTranslateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTranslateActionPerformed
         // TODO add your handling code here:
         String sourceCode = txtSource.getText();
-        String output = execute(sourceCode, new TranslationListener());
+        String interfaceReplaced = sourceCode.replaceAll("interface ", "abstract class ");
+        String output = execute(interfaceReplaced, new TranslationListener());
         txtOutput.setText(output);
     }//GEN-LAST:event_btnTranslateActionPerformed
 
@@ -213,7 +214,9 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btnDisplayTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayTreeActionPerformed
         try {
-            displaySyntaxTree(txtSource.getText(), "compilationUnit");
+            String sourceCode = txtSource.getText();
+            String interfaceReplaced = sourceCode.replaceAll("interface ", "abstract class ");
+            displaySyntaxTree(interfaceReplaced, "compilationUnit");
         } catch (IOException ex) {
         }
     }//GEN-LAST:event_btnDisplayTreeActionPerformed

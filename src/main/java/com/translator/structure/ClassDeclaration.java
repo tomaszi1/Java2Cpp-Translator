@@ -17,9 +17,24 @@ public class ClassDeclaration {
     private final List<ClassBodyDeclaration> privateDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> protectedDeclarations = new LinkedList<>();
     private final Map<String, ClassBodyDeclaration> allDeclarations = new HashMap<>();
+    private final List<String> extendImplementList = new LinkedList<>();
+    private boolean isAbstract = false;
 
     public ClassDeclaration(ClassDeclarationContext ctx) {
         name = ctx.Identifier().getText();
+        if (ctx.type() != null) {
+            extendImplementList.add(ctx.type().getText());
+        }
+        if (ctx.typeList() != null) {
+            for (JavaParser.TypeContext typeCon : ctx.typeList().type()) {
+                extendImplementList.add(typeCon.getText());
+            }
+        }
+        if (ctx.parent != null && ctx.parent instanceof JavaParser.TypeDeclarationContext) {
+            if (((JavaParser.TypeDeclarationContext) ctx.parent).classOrInterfaceModifier().toString().contains("abstract")) {
+                isAbstract = true;
+            }
+        }
     }
 
     public void addDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
@@ -40,7 +55,7 @@ public class ClassDeclaration {
             return;
         }
         JavaParser.ModifierContext modCtx = ctx.modifier().get(0);
-        
+
         String modifier = modCtx.classOrInterfaceModifier().getText();
 
         switch (modifier) {
@@ -66,14 +81,17 @@ public class ClassDeclaration {
     }
 
     public boolean isMainMethod(JavaParser.ClassBodyDeclarationContext ctx) {
-        if (ctx.modifier().size() < 2)
+        if (ctx.modifier().size() < 2) {
             return false;
+        }
         if (!ctx.modifier().get(0).getText().equals("public")
-                || !ctx.modifier().get(1).getText().equals("static"))
+                || !ctx.modifier().get(1).getText().equals("static")) {
             return false;
+        }
         JavaParser.MethodDeclarationContext methCtx = ctx.memberDeclaration().methodDeclaration();
-        if (methCtx == null || !methCtx.Identifier().getText().equals("main"))
+        if (methCtx == null || !methCtx.Identifier().getText().equals("main")) {
             return false;
+        }
         ParseTree childCtx = methCtx.getChild(0);
         return childCtx.getText().equals("void");
     }
@@ -82,7 +100,18 @@ public class ClassDeclaration {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append(Output.indent(0));
-        b.append("class ").append(name).append("{\n");
+        if (isAbstract) {
+            b.append("abstract ");
+        }
+        b.append("class ").append(name);
+        if (!extendImplementList.isEmpty()) {
+            b.append(" : ");
+            for (String s : extendImplementList) {
+                b.append("public " + s + ", ");
+            }
+            b.setLength(b.length() - 2);
+        }
+        b.append("{\n");
         Output.indentLevel++;
         if (!publicDeclarations.isEmpty()) {
             b.append(Output.indent(-1)).append("public:\n");
@@ -90,18 +119,20 @@ public class ClassDeclaration {
         for (ClassBodyDeclaration decl : publicDeclarations) {
             b.append(decl).append("\n");
         }
-        if (!privateDeclarations.isEmpty())
+        if (!privateDeclarations.isEmpty()) {
             b.append(Output.indent(-1)).append("private:\n");
+        }
         for (ClassBodyDeclaration decl : privateDeclarations) {
             b.append(decl).append("\n");
         }
-        if (!protectedDeclarations.isEmpty())
+        if (!protectedDeclarations.isEmpty()) {
             b.append(Output.indent(-1)).append("protected:\n");
+        }
         for (ClassBodyDeclaration decl : protectedDeclarations) {
             b.append(decl).append("\n");
         }
         Output.indentLevel--;
-        b.append(Output.indent(0)).append("}");
+        b.append(Output.indent(0)).append("}\n\n");
         return b.toString();
     }
 
@@ -111,8 +142,9 @@ public class ClassDeclaration {
 
     public boolean hasObjectMember(String name) {
         ClassBodyDeclaration cbDecl = allDeclarations.get(name);
-        if (cbDecl != null && cbDecl.isObjectType())
+        if (cbDecl != null && cbDecl.isObjectType()) {
             return true;
+        }
         return false;
     }
 
