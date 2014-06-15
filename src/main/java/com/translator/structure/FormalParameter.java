@@ -14,7 +14,7 @@ public class FormalParameter {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append(ctx.type().getText());
+        b.append(ctx.type().getText().equals("boolean") ? "bool" : ctx.type().getText());
         if (ctx.type().classOrInterfaceType() != null
                 && !ctx.variableDeclaratorId().getText().contains("[]")
                 && !ctx.type().getText().contains("[]"))

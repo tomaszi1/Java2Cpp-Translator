@@ -23,7 +23,7 @@ public class LocalVariableDeclaration {
                 && ctx.variableModifier().get(0).getText().equals("final")) {
             sb.append("const ");
         }
-        sb.append(ctx.type().getText()).append(" ");
+        sb.append(ctx.type().getText().equals("boolean") ? "bool" : ctx.type().getText()).append(" ");
         if (ctx.type().classOrInterfaceType() != null
                 && !ctx.type().getText().contains("[]"))
             for (VariableDeclarator varDecl : variableDeclarators) {

@@ -11,10 +11,16 @@ import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaListener;
 import com.translator.parser.JavaParser;
 import com.translator.parser.TranslationListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -31,16 +37,6 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
-        String source = ""
-                + "public class Test {\n"
-                + " private Field pole,pole2;\n"
-                + " public void metoda(){\n"
-                + "\tfunkcja().costam();\n"
-                + " }\n"
-                + " public Field funkcja(){\n"
-                + " }\n"
-                + "}";
-        txtSource.setText(source);
     }
 
     /**
@@ -57,8 +53,12 @@ public class MainWindow extends javax.swing.JFrame {
         btnTranslate = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtSource = new javax.swing.JTextArea();
+        btnSave = new javax.swing.JButton();
+        btnOpen = new javax.swing.JButton();
+        btnDisplayTree = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Translator Java -> C++");
 
         txtOutput.setColumns(20);
         txtOutput.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
@@ -66,7 +66,7 @@ public class MainWindow extends javax.swing.JFrame {
         txtOutput.setName(""); // NOI18N
         jScrollPane1.setViewportView(txtOutput);
 
-        btnTranslate.setText("Translate");
+        btnTranslate.setText("Tłumacz");
         btnTranslate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTranslateActionPerformed(evt);
@@ -79,27 +79,62 @@ public class MainWindow extends javax.swing.JFrame {
         txtSource.setName(""); // NOI18N
         jScrollPane2.setViewportView(txtSource);
 
+        btnSave.setText("Zapisz plik");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnOpen.setText("Otwórz plik");
+        btnOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenActionPerformed(evt);
+            }
+        });
+
+        btnDisplayTree.setText("<html><center>Wyświetl drzewo syntaktyczne</center></html>");
+        btnDisplayTree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisplayTreeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnTranslate, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnTranslate, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                            .addComponent(btnDisplayTree, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
+                .addGap(200, 200, 200)
                 .addComponent(btnTranslate, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDisplayTree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2))
@@ -114,12 +149,74 @@ public class MainWindow extends javax.swing.JFrame {
         String sourceCode = txtSource.getText();
         String output = execute(sourceCode, new TranslationListener());
         txtOutput.setText(output);
+    }//GEN-LAST:event_btnTranslateActionPerformed
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        JFileChooser saveFile = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file", "txt", "cpp");
+        saveFile.setFileFilter(filter);
+        int returnVal = saveFile.showSaveDialog(null);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = saveFile.getSelectedFile();
+                if (!(file.getName().endsWith(".txt") || file.getName().endsWith(".cpp"))) {
+                    file = new File(file.getAbsolutePath() + ".cpp");
+                }
+
+                BufferedWriter outFile = null;
+                try {
+                    outFile = new BufferedWriter(new FileWriter(file));
+                    txtOutput.write(outFile);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (outFile != null) {
+                        try {
+                            outFile.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Zapis do pliku zakończony sukcesem",
+                        "Zapis", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Zapis do pliku zakończony niepowodzeniem",
+                        "Zapis", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+        JFileChooser openFile = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file", "txt", "java");
+        openFile.setFileFilter(filter);
+        int returnVal = openFile.showOpenDialog(null);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                File selectedFile = openFile.getSelectedFile();
+
+                BufferedReader in = new BufferedReader(new FileReader(selectedFile));
+                StringBuilder sb = new StringBuilder();
+                String line = in.readLine();
+                while (line != null) {
+                    sb.append(line + "\n");
+                    line = in.readLine();
+                }
+                txtSource.setText(sb.toString());
+            } catch (Exception ex) {
+            }
+        }
+    }//GEN-LAST:event_btnOpenActionPerformed
+
+    private void btnDisplayTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayTreeActionPerformed
         try {
-            displaySyntaxTree(sourceCode, "compilationUnit");
+            displaySyntaxTree(txtSource.getText(), "compilationUnit");
         } catch (IOException ex) {
         }
-    }//GEN-LAST:event_btnTranslateActionPerformed
+    }//GEN-LAST:event_btnDisplayTreeActionPerformed
     public static String execute(String sourceCode, JavaListener listener) {
         ContextHolder.classBodyDeclaration = null;
         ContextHolder.methodDeclaration = null;
@@ -150,6 +247,9 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDisplayTree;
+    private javax.swing.JButton btnOpen;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnTranslate;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

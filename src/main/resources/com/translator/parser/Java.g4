@@ -409,7 +409,7 @@ statement
     |   'while' parExpression statement
     |   'do' statement 'while' parExpression ';'
     |   'try' block (catchClause+ finallyBlock? | finallyBlock)
-    |   'try' resourceSpecification block catchClause* finallyBlock?
+    |   'try' resourceSpecification block catchClause* finallyBlock? //???
     |   'switch' parExpression '{' switchBlockStatementGroup* switchLabel* '}'
     |   'synchronized' parExpression block
     |   'return' expression? ';'

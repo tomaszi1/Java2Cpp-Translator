@@ -17,7 +17,7 @@ public class FieldDeclaration {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append(Output.indent(0));
-        b.append(ctx.type().getText()).append(" ");
+        b.append(ctx.type().getText().equals("boolean") ? "bool" : ctx.type().getText()).append(" ");
         if (ctx.type().classOrInterfaceType() != null) {
             for (JavaParser.VariableDeclaratorContext varDecCtx : ctx.variableDeclarators().variableDeclarator()) {
                 //if (varDecCtx.variableDeclaratorId() != null)

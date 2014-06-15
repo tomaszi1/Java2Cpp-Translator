@@ -1,5 +1,6 @@
 package com.translator.structure;
 
+import com.translator.output.Output;
 import com.translator.parser.JavaParser;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,16 @@ public class Statement {
                 tokensList.add(new Expression(((JavaParser.StatementExpressionContext) pt).expression()));
             } else if (pt instanceof JavaParser.BlockContext) {
                 tokensList.add(new Block((JavaParser.BlockContext) pt));
+            } else if (pt instanceof JavaParser.ForControlContext) {
+                tokensList.add(new ForControl((JavaParser.ForControlContext) pt));
+            } else if (pt instanceof JavaParser.CatchClauseContext) {
+                tokensList.add(new CatchClause((JavaParser.CatchClauseContext) pt));
+            } else if (pt instanceof JavaParser.FinallyBlockContext) {
+                tokensList.add(new FinallyBlock((JavaParser.FinallyBlockContext) pt));
+            } else if (pt instanceof JavaParser.SwitchBlockStatementGroupContext) {
+                tokensList.add(new SwitchBlockStatementGroup((JavaParser.SwitchBlockStatementGroupContext) pt));
+            } else if (pt instanceof JavaParser.SwitchLabelContext) {
+                tokensList.add(new SwitchLabel((JavaParser.SwitchLabelContext) pt));
             }
         }
     }
@@ -35,6 +46,8 @@ public class Statement {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Object token : tokensList) {
+            if(token.toString().equals("} "))
+                sb.append(Output.indent(0));
             sb.append(token);
         }
         return sb.toString();

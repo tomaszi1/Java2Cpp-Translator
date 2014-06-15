@@ -37,7 +37,7 @@ public class MethodDeclaration {
         if (ctx.type() == null)
             b.append("void ");
         else {
-            b.append(ctx.type().getText());
+            b.append(ctx.type().getText().equals("boolean") ? "bool" : ctx.type().getText());
             if (ctx.type().classOrInterfaceType() != null
                     && !ctx.type().getText().contains("[]")) {
                 b.append("* ");

@@ -1,4 +1,3 @@
-
 package com.translator.structure;
 
 import com.translator.output.Output;
@@ -16,6 +15,14 @@ public class Block {
         for (JavaParser.BlockStatementContext bsCtx : ctx.blockStatement()) {
             blockStatements.add(new BlockStatement(bsCtx));
         }
+    }
+
+    public void addBlockStatemnsts(List<BlockStatement> list) {
+        blockStatements.addAll(list);
+    }
+
+    public List<BlockStatement> getBlockStatements() {
+        return blockStatements;
     }
 
     @Override
