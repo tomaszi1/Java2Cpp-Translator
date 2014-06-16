@@ -3,11 +3,12 @@ package com.translator.structure;
 
 import com.translator.parser.JavaParser;
 
-public class VariableDeclarator {
+public class VariableDeclarator extends SyntaxTreeElement {
     private final JavaParser.VariableDeclaratorContext ctx;
     private VariableInitializer variableInitializer;
 
     VariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         if (ctx.variableInitializer() != null)
             variableInitializer = new VariableInitializer(ctx.variableInitializer());

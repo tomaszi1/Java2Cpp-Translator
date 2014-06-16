@@ -4,12 +4,13 @@ import com.translator.parser.JavaParser;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LocalVariableDeclaration {
+public class LocalVariableDeclaration extends SyntaxTreeElement {
 
     private final JavaParser.LocalVariableDeclarationContext ctx;
     List<VariableDeclarator> variableDeclarators = new LinkedList<>();
 
     public LocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         for (JavaParser.VariableDeclaratorContext varDeclCtx : ctx.variableDeclarators().variableDeclarator()) {
             variableDeclarators.add(new VariableDeclarator(varDeclCtx));

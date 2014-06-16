@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class MethodDeclaration {
+public class MethodDeclaration extends SyntaxTreeElement {
 
     protected MethodBody methodBody;
     protected final JavaParser.MethodDeclarationContext ctx;
@@ -15,6 +15,7 @@ public class MethodDeclaration {
     private final Set<String> localVariableNames = new HashSet<>();
 
     public MethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         if (ctx.formalParameters().formalParameterList() != null) {
             for (JavaParser.FormalParameterContext forParCtx : ctx.formalParameters().formalParameterList().formalParameter()) {

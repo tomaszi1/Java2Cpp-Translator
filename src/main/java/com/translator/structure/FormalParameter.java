@@ -3,11 +3,12 @@ package com.translator.structure;
 
 import com.translator.parser.JavaParser;
 
-public class FormalParameter {
+public class FormalParameter extends SyntaxTreeElement {
 
     private final JavaParser.FormalParameterContext ctx;
 
     public FormalParameter(JavaParser.FormalParameterContext ctx) {
+        super(ctx);
         this.ctx = ctx;
     }
 

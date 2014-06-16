@@ -6,13 +6,14 @@ import com.translator.parser.JavaParser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassBodyDeclaration {
+public class ClassBodyDeclaration extends SyntaxTreeElement {
 
     JavaParser.ClassBodyDeclarationContext ctx;
     private FieldDeclaration fieldDecl;
     private MethodDeclaration methodDecl;
 
     public ClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         if (ctx.memberDeclaration() != null) {
             if (ctx.memberDeclaration().methodDeclaration() != null) {
@@ -42,7 +43,7 @@ public class ClassBodyDeclaration {
             idList.add(methodDecl.getIdentifier());
             return idList;
         }
-        return null;
+        return new ArrayList<>();
     }
 
     boolean isStatic() {

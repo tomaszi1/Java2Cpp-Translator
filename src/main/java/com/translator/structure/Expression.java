@@ -8,7 +8,7 @@ import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class Expression {
+public class Expression extends SyntaxTreeElement {
 
     private final JavaParser.ExpressionContext ctx;
     private final List<Expression> expressions = new LinkedList<>();
@@ -18,6 +18,7 @@ public class Expression {
     private boolean instanceOf = false;
 
     public Expression(JavaParser.ExpressionContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         parentClass = ContextHolder.classDeclarations.peek();
         parentMethod = ContextHolder.methodDeclaration;

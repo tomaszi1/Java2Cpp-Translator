@@ -1,18 +1,23 @@
 package com.translator.structure;
 
+import com.translator.TranslationUnit;
 import com.translator.output.ContextHolder;
 import com.translator.output.Output;
 import com.translator.parser.JavaParser;
+import com.translator.parser.JavaParser.ClassBodyDeclarationContext;
 import com.translator.parser.JavaParser.ClassDeclarationContext;
+import com.translator.utils.Utils;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-public class ClassDeclaration {
+public final class ClassDeclaration extends SyntaxTreeElement {
 
-    private final String name;
+    private final TranslationUnit parent;
+    private final ClassDeclarationContext ctx;
+    private String name;
     private final List<ClassBodyDeclaration> publicDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> privateDeclarations = new LinkedList<>();
     private final List<ClassBodyDeclaration> protectedDeclarations = new LinkedList<>();
@@ -20,7 +25,13 @@ public class ClassDeclaration {
     private final List<String> extendImplementList = new LinkedList<>();
     private boolean isAbstract = false;
 
-    public ClassDeclaration(ClassDeclarationContext ctx) {
+    public ClassDeclaration(ClassDeclarationContext ctx, TranslationUnit parent) {
+        super(ctx);
+        this.ctx = ctx;
+        this.parent = parent;
+    }
+
+    public void initClassContent() {
         name = ctx.Identifier().getText();
         if (ctx.type() != null) {
             extendImplementList.add(ctx.type().getText());
@@ -30,28 +41,31 @@ public class ClassDeclaration {
                 extendImplementList.add(typeCon.getText());
             }
         }
-        if (ctx.parent != null && ctx.parent instanceof JavaParser.TypeDeclarationContext) {
+        if (ctx.parent != null && ctx.parent instanceof JavaParser.TypeDeclarationContext) { // czemu tak?
             if (((JavaParser.TypeDeclarationContext) ctx.parent).classOrInterfaceModifier().toString().contains("abstract")) {
                 isAbstract = true;
             }
         }
+        for (ClassBodyDeclarationContext cbdCtx : ctx.classBody().classBodyDeclaration()) {
+            addDeclaration(cbdCtx);
+        }
     }
 
     public void addDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+        Utils.checkForExceptions(ctx);
+
         if (isMainMethod(ctx)) {
             MainMethodDeclaration mainMethDecl = new MainMethodDeclaration(ctx);
-            ContextHolder.translationUnit.setMainMethod(mainMethDecl);
+            parent.setMainMethod(mainMethDecl);
             ContextHolder.methodDeclaration = mainMethDecl;
             mainMethDecl.initMethodBody();
             return;
         }
 
-        ClassBodyDeclaration classDecl = new ClassBodyDeclaration(ctx);
+        ClassBodyDeclaration classBodyDecl = new ClassBodyDeclaration(ctx);
         if (ctx.modifier().isEmpty()) {
-            privateDeclarations.add(classDecl);
-            for (String id : classDecl.getIdentifiers()) {
-                allDeclarations.put(id, classDecl);
-            }
+            privateDeclarations.add(classBodyDecl);
+            saveAllDeclarations(classBodyDecl);
             return;
         }
         JavaParser.ModifierContext modCtx = ctx.modifier().get(0);
@@ -61,26 +75,30 @@ public class ClassDeclaration {
         switch (modifier) {
             case "public":
                 ctx.children.remove(modCtx);
-                publicDeclarations.add(classDecl);
+                publicDeclarations.add(classBodyDecl);
                 break;
             case "protected":
                 ctx.children.remove(modCtx);
-                protectedDeclarations.add(classDecl);
+                protectedDeclarations.add(classBodyDecl);
                 break;
             case "private":
                 ctx.children.remove(modCtx);
-                privateDeclarations.add(classDecl);
+                privateDeclarations.add(classBodyDecl);
                 break;
             default:
-                privateDeclarations.add(classDecl);
+                privateDeclarations.add(classBodyDecl);
         }
 
-        for (String id : classDecl.getIdentifiers()) {
-            allDeclarations.put(id, classDecl);
+        saveAllDeclarations(classBodyDecl);
+    }
+
+    private void saveAllDeclarations(ClassBodyDeclaration classBodyDecl) {
+        for (String id : classBodyDecl.getIdentifiers()) {
+            allDeclarations.put(id, classBodyDecl);
         }
     }
 
-    public boolean isMainMethod(JavaParser.ClassBodyDeclarationContext ctx) {
+    private boolean isMainMethod(JavaParser.ClassBodyDeclarationContext ctx) {
         if (ctx.modifier().size() < 2) {
             return false;
         }
@@ -107,7 +125,7 @@ public class ClassDeclaration {
         if (!extendImplementList.isEmpty()) {
             b.append(" : ");
             for (String s : extendImplementList) {
-                b.append("public " + s + ", ");
+                b.append("public ").append(s).append(", ");
             }
             b.setLength(b.length() - 2);
         }
@@ -147,5 +165,6 @@ public class ClassDeclaration {
         }
         return false;
     }
+
 
 }

@@ -7,13 +7,14 @@ import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class Statement {
+public class Statement extends SyntaxTreeElement {
 
     private final JavaParser.StatementContext ctx;
     private final List tokensList = new LinkedList();
     private Expression expression;
 
     public Statement(JavaParser.StatementContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         for (ParseTree pt : ctx.children) {
             if (pt instanceof TerminalNode) {

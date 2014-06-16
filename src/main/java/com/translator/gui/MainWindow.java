@@ -10,7 +10,7 @@ import com.translator.output.ContextHolder;
 import com.translator.parser.JavaLexer;
 import com.translator.parser.JavaListener;
 import com.translator.parser.JavaParser;
-import com.translator.parser.TranslationListener;
+import com.translator.parser.JavaParser.CompilationUnitContext;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,8 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 /**
  *
@@ -148,7 +146,7 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         String sourceCode = txtSource.getText();
         String interfaceReplaced = sourceCode.replaceAll("interface ", "abstract class ");
-        String output = execute(interfaceReplaced, new TranslationListener());
+        String output = execute(interfaceReplaced);
         txtOutput.setText(output);
     }//GEN-LAST:event_btnTranslateActionPerformed
 
@@ -220,20 +218,17 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (IOException ex) {
         }
     }//GEN-LAST:event_btnDisplayTreeActionPerformed
-    public static String execute(String sourceCode, JavaListener listener) {
-        ContextHolder.classBodyDeclaration = null;
+    public static String execute(String sourceCode) {
         ContextHolder.methodDeclaration = null;
-        ContextHolder.translationUnit = new TranslationUnit();
         ContextHolder.classDeclarations.clear();
         ANTLRInputStream stream = new ANTLRInputStream(sourceCode);
         JavaLexer lexer = new JavaLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaParser parser = new JavaParser(tokens);
 
-        ParserRuleContext tree = parser.compilationUnit();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener, tree);
-        return ContextHolder.translationUnit.toString();
+        CompilationUnitContext tree = parser.compilationUnit();
+        TranslationUnit translationUnit = new TranslationUnit(tree);
+        return translationUnit.toString();
     }
 
     public static void displaySyntaxTree(String code, String baseRule) throws IOException {

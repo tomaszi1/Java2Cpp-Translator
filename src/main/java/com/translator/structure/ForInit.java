@@ -2,13 +2,14 @@ package com.translator.structure;
 
 import com.translator.parser.JavaParser;
 
-public class ForInit {
+public class ForInit extends SyntaxTreeElement {
 
     private final JavaParser.ForInitContext ctx;
     private ExpressionList expressionList;
     private LocalVariableDeclaration localVariableDeclaration;
 
     public ForInit(JavaParser.ForInitContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         if (ctx.expressionList() != null) {
             expressionList = new ExpressionList(ctx.expressionList());

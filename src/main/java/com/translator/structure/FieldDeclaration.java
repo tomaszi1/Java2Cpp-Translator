@@ -6,10 +6,11 @@ import com.translator.parser.JavaParser;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FieldDeclaration {
+public class FieldDeclaration extends SyntaxTreeElement {
     private final JavaParser.FieldDeclarationContext ctx;
 
     public FieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
+        super(ctx);
         this.ctx = ctx;
     }
 

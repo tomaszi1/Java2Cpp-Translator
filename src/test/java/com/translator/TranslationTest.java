@@ -17,15 +17,8 @@ public class TranslationTest {
                 + "     int i = 5;"
                 + " }"
                 + "}";
-        TestExecutor.execute(sourceCode, new LogListener());
+        TestExecutor.execute(sourceCode);
         TreeDisplayer.displaySyntaxTree(sourceCode);
-    }
-
-    @Test
-    public void simpleTest2() throws Exception {
-        String sourceCode = "int i = 5;";
-        TestExecutor.execute(sourceCode, new LogListener());
-        TreeDisplayer.displaySyntaxTree(sourceCode, "");
     }
 
 }

@@ -1,6 +1,8 @@
 
 package com.translator;
 
+import com.translator.output.ContextHolder;
+import com.translator.parser.JavaParser;
 import com.translator.structure.ClassDeclaration;
 import com.translator.structure.MainMethodDeclaration;
 import java.util.LinkedList;
@@ -10,6 +12,18 @@ public class TranslationUnit {
 
     private final List<ClassDeclaration> classDeclarations = new LinkedList<>();
     private MainMethodDeclaration mainMethod;
+
+    public TranslationUnit(JavaParser.CompilationUnitContext tree) {
+        for (JavaParser.TypeDeclarationContext tdCtx : tree.typeDeclaration()) {
+            if (tdCtx.classDeclaration() != null) { // TODO add other types (interface,enum)
+                ClassDeclaration classDecl = new ClassDeclaration(tdCtx.classDeclaration(), this);
+                classDeclarations.add(classDecl);
+                ContextHolder.classDeclarations.push(classDecl);
+                classDecl.initClassContent();
+                ContextHolder.classDeclarations.pop();
+            }
+        }
+    }
 
     public void addClassDeclaration(ClassDeclaration classDecl) {
         classDeclarations.add(classDecl);

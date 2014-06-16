@@ -7,12 +7,13 @@ import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class SwitchBlockStatementGroup {
+public class SwitchBlockStatementGroup extends SyntaxTreeElement {
 
     private final JavaParser.SwitchBlockStatementGroupContext ctx;
     private final List tokensList = new LinkedList();
 
     public SwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         for (ParseTree pt : ctx.children) {
             if (pt instanceof TerminalNode) {

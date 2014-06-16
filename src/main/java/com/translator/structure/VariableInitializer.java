@@ -5,12 +5,13 @@ import com.translator.parser.JavaParser;
 import java.util.LinkedList;
 import java.util.List;
 
-public class VariableInitializer {
+public class VariableInitializer extends SyntaxTreeElement {
     private final JavaParser.VariableInitializerContext ctx;
     private final List<VariableInitializer> arrayInitializer = new LinkedList<>();
     private Expression expression;
 
     VariableInitializer(JavaParser.VariableInitializerContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         if (ctx.expression() != null)
             expression = new Expression(ctx.expression());

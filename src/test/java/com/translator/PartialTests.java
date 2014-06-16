@@ -1,7 +1,6 @@
 
 package com.translator;
 
-import com.translator.parser.TranslationListener;
 import com.translator.utils.TestExecutor;
 import com.translator.utils.TreeDisplayer;
 import org.junit.Test;
@@ -33,13 +32,13 @@ public class PartialTests {
                 + "}";
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
-        TestExecutor.execute(sourceCode, new TranslationListener());
+        TestExecutor.execute(sourceCode);
     }
 
     @Test
     public void test2() throws Exception {
         String sourceCode = ""
-                + "public class Test{"
+                + "public class Test extends Lol implements Hoho{"
                 + " private Field pole,pole2;"
                 + " void costam(){"
                 + "  Obiekt nazwa;"
@@ -52,7 +51,7 @@ public class PartialTests {
                 + " public Field funkcja(){"
                 + " }"
                 + "}";
-        TestExecutor.execute(sourceCode, new TranslationListener());
+        TestExecutor.execute(sourceCode);
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
     }
@@ -69,7 +68,7 @@ public class PartialTests {
                 + " public Field funkcja(){"
                 + " }"
                 + "}";
-        TestExecutor.execute(sourceCode, new TranslationListener());
+        TestExecutor.execute(sourceCode);
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
     }
@@ -90,7 +89,18 @@ public class PartialTests {
                 + "  return new Dupa();"
                 + " }"
                 + "}";
-        TestExecutor.execute(sourceCode, new TranslationListener());
+        TestExecutor.execute(sourceCode);
+
+        TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
+    }
+
+    @Test
+    public void syntaxErrorTest() throws Exception {
+        String sourceCode = ""
+                + "public class Klasa{"
+                + " blont"
+                + "}";
+        TestExecutor.execute(sourceCode);
 
         TreeDisplayer.displaySyntaxTree(sourceCode, "compilationUnit");
     }

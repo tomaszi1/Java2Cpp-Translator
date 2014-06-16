@@ -11,7 +11,7 @@ public class TreeDisplayer {
     public static void displaySyntaxTree(String code, String baseRule) throws IOException {
         String cmd = "java org.antlr.v4.runtime.misc.TestRig Java " + baseRule + " -gui";
         //String parserPath = "D:\\Dropbox\\NetBeans\\Java2Cpp-Translator\\lib\\parser";
-        String parserPath = "C:\\Users\\Jonny\\Documents\\GitHub\\Java2Cpp-Translator\\lib\\parser";
+        String parserPath = "D:\\Dropbox\\NetBeans\\Java2Cpp-Translator\\lib\\parser";
 
         Process proc = Runtime.getRuntime().exec(cmd, null, new File(parserPath));
         try (BufferedWriter stdinWriter = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()))) {

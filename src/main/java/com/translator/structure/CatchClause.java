@@ -6,12 +6,13 @@ import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class CatchClause {
+public class CatchClause extends SyntaxTreeElement {
 
     private final JavaParser.CatchClauseContext ctx;
     private final List tokensList = new LinkedList();
 
     public CatchClause(JavaParser.CatchClauseContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         for (ParseTree pt : ctx.children) {
             if (pt instanceof TerminalNode) {

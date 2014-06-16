@@ -2,13 +2,14 @@ package com.translator.structure;
 
 import com.translator.parser.JavaParser;
 
-public class BlockStatement {
+public class BlockStatement extends SyntaxTreeElement {
 
     private final JavaParser.BlockStatementContext ctx;
     private Statement statement;
     private LocalVariableDeclaration localVariableDeclaration;
 
     public BlockStatement(JavaParser.BlockStatementContext ctx) {
+        super(ctx);
         this.ctx = ctx;
         JavaParser.LocalVariableDeclarationStatementContext varDeclSt = ctx.localVariableDeclarationStatement();
         if (varDeclSt != null)
