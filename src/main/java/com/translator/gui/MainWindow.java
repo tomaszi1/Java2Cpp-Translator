@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
 
 /**
  *
@@ -148,6 +149,7 @@ public class MainWindow extends javax.swing.JFrame {
         String interfaceReplaced = sourceCode.replaceAll("interface ", "abstract class ");
         String output = execute(interfaceReplaced);
         txtOutput.setText(output);
+
     }//GEN-LAST:event_btnTranslateActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -226,9 +228,16 @@ public class MainWindow extends javax.swing.JFrame {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaParser parser = new JavaParser(tokens);
 
-        CompilationUnitContext tree = parser.compilationUnit();
-        TranslationUnit translationUnit = new TranslationUnit(tree);
-        return translationUnit.toString();
+        JavaParser.CompilationUnitContext tree = parser.compilationUnit();
+        try {
+            TranslationUnit translationUnit = new TranslationUnit(tree);
+            return translationUnit.toString();
+        } catch (RecognitionException ex) {
+            JOptionPane.showMessageDialog(null, "Syntax error: " + ex,
+                        "Błąd", JOptionPane.ERROR_MESSAGE);
+        }
+        //return translationUnit.toString();
+        return null;
     }
 
     public static void displaySyntaxTree(String code, String baseRule) throws IOException {
